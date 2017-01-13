@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<!-- Inherit invoice document report (from module sale) -->
+		<template id="report_taxsummary_invoice_document" inherit_id="account.report_invoice_document">
+			<!-- Finds closing part of the invoice for Base and Taxes -->
+			<xpath expr="//div[@class='row']/div[@class='col-xs-4 pull-right']/.."
+				position="before">
+				<div t-if="o.tax_line_ids">
+					<!-- add subtotals and taxex for each tax_line -->
+					<div class="row">
+						<div class="col-xs-6 pull-right">
+							<table class="table table-condensed">
+								<thead>
+									<tr class="border-black">
+										<!-- field that will be print for each tax -->
+										<th>Tax Description</th>
+										<th class="text-right">Base</th>
+										<th class="text-right">Tax Rate</th>
+										<th class="text-right">Tax Amount</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr t-foreach="o.tax_line_ids" t-as="t_line">
+										<td class="text-left">
+											<span t-field="t_line.name" />
+										</td>
+										<td class="text-right">
+											<span t-field="t_line.base"
+												t-field-options='{
+												"widget": "monetary",
+												"display_currency": "o.currency_id"}' />
+										</td>
+										<td class="text-right">
+											<!-- <span t-field="t_line.tax_id.amount" /> -->
+											<span t-esc="'%.0f'%t_line.tax_id.amount" />
+											%
+										</td>
+										<td class="text-right">
+											<span t-field="t_line.amount"
+												t-field-options='{
+												"widget": "monetary",
+												"display_currency": "o.currency_id"}' />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</xpath>
+		</template>
+	</data>
+</openerp>

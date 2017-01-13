@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<!-- Inherit invoice document report (from module sale) -->
+		<template id="report_due_date_invoice_document"
+			inherit_id="account.report_invoice_document">
+			<!-- Finds closing part of the invoice for Base and Taxes -->
+			<xpath expr="//p[@t-if='o.payment_term_id']" position="after">
+				<div class="col-xs-4 pull-left	">
+					<table class="table table-condensed" border="0"
+						style="border: 1px solid;">
+						<thead>
+							<tr class="border-black">
+								<!-- fields that will be printed -->
+								<th>Due date</th>
+								<th>Amount</th>
+							</tr>
+						</thead>
+						<tbody>
+							<t t-foreach="o.sudo().move_id.line_ids" t-as="l">
+								<t t-if="l.account_id.internal_type in ('receivable', 'payable')">
+									<tr>
+										<td>
+											<span t-field="l.date_maturity" />
+										</td>
+										<td>
+											<t t-if="l.credit">
+												<span t-field="l.credit"
+													t-field-options='{
+												"widget": "monetary",
+												"display_currency": "o.currency_id"}' />
+											</t>
+											<t t-if="l.debit">
+												<span t-field="l.debit"
+													t-field-options='{
+												"widget": "monetary",
+												"display_currency": "o.currency_id"}' />
+											</t>
+										</td>
+									</tr>
+								</t>
+							</t>
+						</tbody>
+					</table>
+				</div>
+			</xpath>
+		</template>
+	</data>
+</openerp>
