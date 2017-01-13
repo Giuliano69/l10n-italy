@@ -26,7 +26,8 @@
     'website': 'https://odoo-community.org/',
     'license': 'AGPL-3',
     'category': 'Generic Modules/Accounting',
-    'description': 'Expand taxes details in printing invoice as for VAT Directive article 226',
+    'description': 'Expand taxes details in printing invoice\
+     as for VAT Directive article 226',
     'depends': ['base_vat', 'account', ],
     'data': [
         'view/report_taxsummary_invoice_document.xml',
